@@ -1,0 +1,109 @@
+
+
+                    <div style="margin:20px">
+                        <input type="file" id="csvFileInput" onchange="handleFiles(this.files)"
+                               accept=".csv">
+                    </div>
+
+
+
+                    <div>
+
+                        <table id="exceltable" class="table" hidden>
+                         
+                        </table>
+                    </div>
+
+<script>
+    function handleFiles(files) {
+        // Check for the various File API support.
+        if (window.FileReader) {
+            // FileReader are supported.
+            getAsText(files[0]);
+        } else {
+            alert('FileReader are not supported in this browser.');
+        }
+    }
+
+    function getAsText(fileToRead) {
+
+        var reader = new FileReader();
+        // Read file into memory as UTF-8
+        reader.readAsText(fileToRead);
+        // Handle errors load
+        reader.onload = loadHandler;
+        reader.onerror = errorHandler;
+    }
+
+    function loadHandler(event) {
+
+        var csv = event.target.result;
+        processData(csv);
+    }
+
+
+
+
+
+    function processData(csv) {
+
+        var allTextLines = csv.split(/\r\n|\n/);
+        var lines = [];
+        for (var i = 0; i < allTextLines.length; i++) {
+            var data = allTextLines[i].split(';');
+            var tarr = [];
+            for (var j = 0; j < data.length; j++) {
+                tarr.push(data[j]);
+            }
+            lines.push(tarr);
+        }
+        console.log(lines);
+        debugger;
+        var table = $("#exceltable");
+        table.html("<thead><tr><th >Name</th> <th >Number</th></tr></thead>");
+        for (var i in lines) {
+            debugger;
+            var tr = "";
+            if (i > 0)
+
+            for (var row in lines[i]) {
+
+                debugger;
+                console.log(lines[i][row].split(",")[0])
+                var name = lines[i][row].split(",")[0];
+                var number = lines[i][row].split(",")[1];
+                if (!Number.isInteger(parseInt(number)))
+                    continue;
+                $("#NumberList").append(number + ",")
+
+                console.log(name);
+                console.log(number);
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+
+                 tr = "<tr><td>" + name + "</td> <td>" + number + "</td></tr>"
+                name = "";
+                number = "";
+              
+            }
+            table.append(tr);
+            tr = "";
+            table.removeAttr('hidden');
+
+
+        }
+
+
+
+
+    }
+
+    function errorHandler(evt) {
+        debugger;
+
+        if (evt.target.error.name == "NotReadableError") {
+            alert("Canno't read file !");
+        }
+    }
+</script>
