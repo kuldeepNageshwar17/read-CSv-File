@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+      <style>
+        .lecbox {
+        border: 1px solid #cec2c2;
+        height: 120px;
+    }
+
+    td {
+        padding: 0px 0px !important;
+    }
+    .sub {
+        
+      border: 1px solid #8e6363;
+    width: 147px;
+    padding: 7px;
+    /* padding-left: 10px; */
+    text-align: center;
+    border-radius: 2px;
+    background-color: #b5b5e0;
+    font-weight: bold;
+    }
+    .CloseDiv  {
+         float:right;
+    display:inline-block;
+    padding:2px 5px;
+    background:#ccc;
+    }
+   
+
+      <style type = "text/css">
+         #boxA, #boxB {
+            float:left;padding:10px;margin:10px;-moz-user-select:none;
+         }
+         
+         .boxA { background-color: #6633FF; width:75px; height:75px;  }
+         .boxB { background-color: #FF6699; width:150px; height:150px; }
+      </style>
+      
+      <script type = "text/javascript">
+         
+         function dragStart(ev) {
+            ev.dataTransfer.effectAllowed = 'move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            ev.dataTransfer.setDragImage(ev.target,0,0);
+            return true;
+         }
+         
+         function dragEnter(ev) {
+            event.preventDefault();
+            return true;
+         }
+         
+         function dragOver(ev) {
+            return false;
+         }
+         
+         function dragDrop(ev,t) {
+            debugger;
+            var src = ev.dataTransfer.getData("Text");
+             var nodeCopy = document.getElementById(src).cloneNode(true);
+             var newSpan = document.createElement('span');
+             newSpan.innerHTML="×";
+             newSpan.setAttribute('class',"CloseDiv");
+             newSpan.setAttribute('onclick',"spanclose(this);");
+             nodeCopy.setAttribute("data-value", nodeCopy.getAttribute("id"));
+              nodeCopy.setAttribute("id", nodeCopy.getAttribute("id"+"Copy"));
+
+             nodeCopy.append(newSpan);
+
+
+            ev.target.appendChild(nodeCopy);
+            ev.stopPropagation();
+            t.setAttribute("ondragenter","return  false ;");
+            t.setAttribute("ondragover","return  false ;");
+            t.setAttribute("ondrop","return  false ;");
+
+
+
+            return false;
+         }
+      </script>
+      
+   </head>
+   <body>
+      
+      <center>
+         <h2>Drag and drop HTML5 demo</h2>
+         <div>Try to move the purple box into the pink box.</div>
+         
+         <div id="boxA"class="boxA" draggable = "true"
+            ondragstart = "return dragStart(event)">
+            <p>Drag Me</p>
+         </div>
+         
+         <div id = "boxB" class="boxB" ondragenter = "return dragEnter(event)"  ondrop = "return dragDrop(event)" 
+         ondragover = "return dragOver(event)">Dustbin
+         </div>
+         <div id = "boxB" class="boxB" ondragenter = "return dragEnter(event)" 
+            ondrop = "return dragDrop(event,this)" 
+            ondragover = "return dragOver(event)">Dustbin
+         </div>
+      </center>
+        <div class="row">
+        <div class="col-md-6">
+             <div id="@item.SUB_ID1"  class="sub" draggable="true" ondragstart="return dragStart(event)" ondragenter = "return event.preventDefault();">
+                    <span class="" id="@item.SUB_ID" >Physics</span>
+                </div>
+                 <div id="@item.SUB_ID2"  class="sub" draggable="true" ondragstart="return dragStart(event)" ondragenter = "return event.preventDefault();">
+                    <span class="" id="@item.SUB_ID" >chemistry </span>
+                </div>
+                 <div id="@item.SUB_ID3"  class="sub" draggable="true" ondragstart="return dragStart(event)" ondragenter = "return false;">
+                    <span class="" id="@item.SUB_ID" >Bio</span>
+                    <!-- <span class="CloseDiv" onclick="spanclose(this);">×</span> -->
+                </div>
+
+
+           
+
+        </div>
+    </div>
+    <script>
+      function spanclose(t){ 
+         debugger;
+           t.parentElement.parentElement.setAttribute("ondragenter","return dragEnter(event,this)");
+             t.parentElement.parentElement.setAttribute("ondragover","return dragOver(event,this)");
+             t.parentElement.parentElement.setAttribute("ondrop","return dragDrop(event,this)");
+           t.parentNode.parentNode
+            .removeChild(t.parentNode);
+      // console.log(t);
+           
+      //        alert("Removed");
+      }
+//       (function closediv(
+//          ){var classname = document.querySelectorAll(".CloseDiv");
+//          debugger;
+//          var myFunction = function() {
+//             this.parentNode.parentNode
+//             .removeChild(this.parentNode);
+//             alert("Removed");
+//             return false;             
+// };
+// for (var i = 0; i < classname.length; i++) {
+//     classname[i].addEventListener('click', myFunction, false);
+// }
+// })()
+         
+   
+</script>
+
+      
+   </body>
+</html>
